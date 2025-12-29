@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
+import PublicLayout from "../layouts/PublicLayout";
+import ProductCard from "../components/public/ProductCard";
 import { API_URL } from "../services/api";
-
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProductCard from "../components/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -24,6 +22,7 @@ export default function Home() {
       });
   }, []);
 
+  // eslint-disable-next-line no-unused-vars
   const filteredProducts = products.filter((p) => {
     const name = (p?.name || "").toLowerCase();
     const cat = p?.category || "";
@@ -33,9 +32,7 @@ export default function Home() {
   });
 
   return (
-    <>
-      <Navbar />
-
+    <PublicLayout>
       {/* HERO */}
       <section className="bg-linear-to-r from-black to-gray-900 text-white py-16 px-6">
         <div className="max-w-6xl mx-auto">
@@ -71,24 +68,37 @@ export default function Home() {
           </select>
         </div>
 
-        {/* ====== BAGIAN YANG KAMU TANYA ====== */}
+        {/* PRODUK GRID */}
         {loading ? (
           <p>Loading...</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {filteredProducts.length === 0 ? (
+            {products
+              .filter((p) => {
+                const name = (p?.name || "").toLowerCase();
+                const cat = p?.category || "";
+                const matchSearch = name.includes(search.toLowerCase());
+                const matchCategory = category === "all" || cat === category;
+                return matchSearch && matchCategory;
+              })
+              .length === 0 ? (
               <p>Tidak ada produk</p>
             ) : (
-              filteredProducts.map((item) => (
-                <ProductCard key={item.id} product={item} />
-              ))
+              products
+                .filter((p) => {
+                  const name = (p?.name || "").toLowerCase();
+                  const cat = p?.category || "";
+                  const matchSearch = name.includes(search.toLowerCase());
+                  const matchCategory = category === "all" || cat === category;
+                  return matchSearch && matchCategory;
+                })
+                .map((item) => (
+                  <ProductCard key={item.id} product={item} />
+                ))
             )}
           </div>
         )}
-        {/* =================================== */}
       </main>
-
-      <Footer />
-    </>
+    </PublicLayout>
   );
 }

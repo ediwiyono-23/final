@@ -7,20 +7,35 @@ export default function FormData({ onRefresh }) {
     price: "",
     category: "Headphone",
     image: "",
+    description: "",
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+    if (!form.name.trim() || !form.price) {
+      alert("Nama dan harga harus diisi!");
+      return;
+    }
+    (async () => {
+      await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          price: Number(form.price),
+          image: form.image || "https://via.placeholder.com/300",
+        }),
+      });
+      setForm({
+      name: "",
+      price: "",
+      category: "Headphone",
+      image: "",
+      description: "",
     });
-
-    // Reset form setelah sukses
-    setForm({ name: "", price: "", category: "Headphone", image: "" });
-    onRefresh(); // Refresh data di tabel
+      onRefresh?.();
+      alert("Produk berhasil ditambahkan!");
+    })();
   };
 
   return (
@@ -31,7 +46,7 @@ export default function FormData({ onRefresh }) {
       <h2 className="text-lg font-bold mb-4">Tambah Produk Baru</h2>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Nama Produk
         </label>
         <input
@@ -40,12 +55,13 @@ export default function FormData({ onRefresh }) {
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           className="mt-1 w-full border p-2 rounded-lg outline-none focus:ring-2 focus:ring-black"
+          placeholder="Contoh: Wireless Headphone Pro"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Harga (Angka)
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Harga (Rp)
         </label>
         <input
           type="number"
@@ -53,11 +69,12 @@ export default function FormData({ onRefresh }) {
           value={form.price}
           onChange={(e) => setForm({ ...form, price: e.target.value })}
           className="mt-1 w-full border p-2 rounded-lg outline-none focus:ring-2 focus:ring-black"
+          placeholder="Contoh: 1200000"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Kategori
         </label>
         <select
@@ -72,21 +89,34 @@ export default function FormData({ onRefresh }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
-          URL Gambar (Opsional)
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          URL Gambar
         </label>
         <input
           type="text"
           placeholder="https://..."
           value={form.image}
           onChange={(e) => setForm({ ...form, image: e.target.value })}
-          className="mt-1 w-full border p-2 rounded-lg outline-none"
+          className="mt-1 w-full border p-2 rounded-lg outline-none focus:ring-2 focus:ring-black"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Deskripsi
+        </label>
+        <textarea
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          className="mt-1 w-full border p-2 rounded-lg outline-none focus:ring-2 focus:ring-black"
+          rows="3"
+          placeholder="Deskripsi produk..."
         />
       </div>
 
       <button
         type="submit"
-        className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition"
+        className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition font-semibold"
       >
         Simpan Produk
       </button>
