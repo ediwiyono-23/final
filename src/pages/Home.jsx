@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { API_URL } from "../services/api";
 
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProductCard from "../components/ProductCard";
+import Navbar from "../components/public/Navbar";
+import Footer from "../components/public/Footer";
+import ProductCard from "../components/public/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
