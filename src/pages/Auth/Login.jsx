@@ -9,7 +9,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
