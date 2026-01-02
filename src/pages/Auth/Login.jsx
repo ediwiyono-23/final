@@ -20,34 +20,35 @@ export default function Login() {
 
     login(result);
 
-    // 🔥 CEK ROLE
     if (result.user.role === "admin") {
       navigate("/admin");
     } else {
-      navigate("/home");
+      navigate("/"); // HOME = /
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-xl shadow w-full max-w-md space-y-4"
-      >
+      <form className="bg-white p-8 rounded-xl shadow w-full max-w-md space-y-4"
+            onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold text-center">Login</h2>
 
         <input
           type="email"
           placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
           className="w-full border px-4 py-2 rounded"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
           type="password"
           placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
           className="w-full border px-4 py-2 rounded"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <button className="w-full bg-blue-600 text-white py-2 rounded">

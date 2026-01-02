@@ -1,29 +1,37 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const location = useLocation();
-
-  const isActive = (path) =>
-    location.pathname === path
-      ? "text-white"
-      : "text-gray-400 hover:text-white";
-
   return (
-    <nav className="bg-linear-to-r from-black to-gray-900 px-8 py-4 flex justify-between items-center">
+    <nav className="bg-black text-white px-8 py-4 flex justify-between items-center">
       {/* LOGO */}
-      <Link to="/" className="text-2xl font-extrabold text-white tracking-wide">
-        Biji<span className="text-blue-400">Store</span>
+      <Link to="/" className="text-xl font-bold text-blue-400">
+        BijiStore
       </Link>
 
       {/* MENU */}
-      <div className="flex items-center gap-6">
-        <Link to="/" className={isActive("/")}>
+      <div className="flex gap-6 items-center">
+        <Link to="/" className="hover:text-blue-400">
           Home
+        </Link>
+
+        <Link to="/tentang" className="hover:text-blue-400">
+          Tentang Kami
+        </Link>
+
+        <Link to="/kontak" className="hover:text-blue-400">
+          Kontak
+        </Link>
+
+        <Link
+          to="/login"
+          className="border border-blue-500 px-4 py-1 rounded hover:bg-blue-500"
+        >
+          Login
         </Link>
 
         <Link
           to="/admin"
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
+          className="bg-blue-600 px-4 py-1 rounded hover:bg-blue-700"
         >
           Admin Dashboard
         </Link>

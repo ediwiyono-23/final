@@ -30,7 +30,15 @@ export default function ProductCard({ product }) {
 
       <p className="font-semibold mt-2 text-sm">
         Rp {Number(product.price || 0).toLocaleString("id-ID")}
-      </p>
+      </p>import { Link } from "react-router-dom";
+
+<Link
+  to={`/detail-produk/${product.id}`}
+  className="text-xs text-blue-600 hover:underline"
+>
+  Lihat Detail →
+</Link>
+
 
       <div className="mt-3 flex flex-col gap-2">
         <Button onClick={handleBuy} className="w-full py-2 text-sm">
