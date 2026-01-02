@@ -1,12 +1,13 @@
-import Navbar from "../components/public/Navbar";
-import Footer from "../components/public/Footer";
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/common/Navbar";
+import Footer from "../components/common/Footer";
 
-export default function PublicLayout({ children }) {
+export default function PublicLayout() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <Navbar /> 
       <main className="flex-1">
-        {children}
+        <Outlet />
       </main>
       <Footer />
     </div>

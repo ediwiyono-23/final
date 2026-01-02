@@ -1,80 +1,74 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Dialog from "../ui/Dialog";
+import { useProducts } from "../../hooks/useProducts"; 
+import Dialog from "../ui/Dialog"; 
 
-export default function DataTable({ products, onDeleteProduct }) {
-  const [open, setOpen] = useState(false);
+export default function DataTable({ products }) {
+  const { deleteProduct } = useProducts();
   const [selectedId, setSelectedId] = useState(null);
-
-  const confirmDelete = (id) => {
-    setSelectedId(id);
-    setOpen(true);
-  };
-
-  const handleDelete = () => {
-    if (!selectedId) return;
-    onDeleteProduct(selectedId);
-    setOpen(false);
-    setSelectedId(null);
+  const handleDeleteConfirm = async () => {
+    if (selectedId) {
+      await deleteProduct(selectedId); 
+      setSelectedId(null); 
+    }
   };
 
   return (
-    <div className="bg-white rounded-xl shadow overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
+    <div className="bg-white rounded-xl border overflow-hidden shadow-sm">
+      <table className="w-full text-left border-collapse">
+        <thead className="bg-gray-50 text-[10px] uppercase text-gray-400 font-bold tracking-widest border-b">
+          <tr>
+            <th className="px-6 py-4">Nama Produk</th>
+            <th className="px-6 py-4">Harga</th>
+            <th className="px-6 py-4 text-center">Aksi</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y text-sm">
+          {products.length === 0 ? (
             <tr>
-              <th className="px-6 py-4">Produk</th>
-              <th className="px-6 py-4">Kategori</th>
-              <th className="px-6 py-4">Harga</th>
-              <th className="px-6 py-4">Aksi</th>
+              <td colSpan="3" className="px-6 py-12 text-center text-gray-400 italic">
+                Belum ada data produk tersedia di MockAPI.
+              </td>
             </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {products.length === 0 ? (
-              <tr>
-                <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
-                  Tidak ada produk
+          ) : (
+            products.map((item) => (
+              <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                <td className="px-6 py-4 font-semibold text-gray-700">
+                  {item.name}
+                </td>
+                <td className="px-6 py-4 text-gray-600">
+                  Rp {Number(item.price).toLocaleString("id-ID")}
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex justify-center gap-4">
+                    <Link 
+                      to={`/admin/edit/${item.id}`} 
+                      className="text-blue-600 font-bold hover:text-blue-800 transition text-xs">
+                      EDIT
+                    </Link>
+                    <button 
+                      onClick={() => setSelectedId(item.id)} 
+                      className="text-red-500 font-bold hover:text-red-700 transition text-xs">
+                      HAPUS
+                    </button>
+                  </div>
                 </td>
               </tr>
-            ) : (
-              products.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 font-medium text-gray-900">
-                    {item.name}
-                  </td>
-                  <td className="px-6 py-4 text-gray-600">{item.category}</td>
-                  <td className="px-6 py-4">
-                    Rp {Number(item.price).toLocaleString("id-ID")}
-                  </td>
-                  <td className="px-6 py-4 flex gap-3">
-                    <Link
-                      to={`/admin/edit/${item.id}`}
-                      className="text-blue-600 hover:underline text-sm font-semibold"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => confirmDelete(item.id)}
-                      className="text-red-600 hover:text-red-900 text-sm font-semibold"
-                    >
-                      Hapus
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+            ))
+          )}
+        </tbody>
+      </table>
 
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        title="Konfirmasi Hapus"
-        onConfirm={handleDelete}
+      <Dialog 
+        open={!!selectedId} 
+        onClose={() => setSelectedId(null)} 
+        onConfirm={handleDeleteConfirm}
+        title="Hapus Produk?"
       >
-        <p>Yakin ingin menghapus produk ini? Tindakan ini tidak dapat dibatalkan.</p>
+        <p className="text-sm">
+          Apakah Anda yakin ingin menghapus produk ini? <br />
+          Data yang sudah dihapus dari <strong>MockAPI</strong> tidak dapat dikembalikan.
+        </p>
       </Dialog>
     </div>
   );

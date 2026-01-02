@@ -1,125 +1,100 @@
 import { useState } from "react";
-import { API_URL } from "../../services/api";
+import { useProducts } from "../../hooks/useProducts";
+import Button from "../ui/Button";
 
-export default function FormData({ onRefresh }) {
-  const [form, setForm] = useState({
-    name: "",
-    price: "",
-    category: "Headphone",
-    image: "",
-    description: "",
+export default function FormData() {
+  const { addProduct } = useProducts();
+  
+  const [form, setForm] = useState({ 
+    name: "", 
+    price: "", 
+    category: "Gadgets", 
+    image: "", 
+    description: "" 
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.price) {
-      alert("Nama dan harga harus diisi!");
-      return;
+    
+    if (!form.name || !form.price || !form.image) {
+      return alert("Nama, Harga, dan Link Foto wajib diisi!");
     }
-    (async () => {
-      await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          price: Number(form.price),
-          image: form.image || "https://via.placeholder.com/300",
-        }),
-      });
-      setForm({
-      name: "",
-      price: "",
-      category: "Headphone",
-      image: "",
-      description: "",
-    });
-      onRefresh?.();
-      alert("Produk berhasil ditambahkan!");
-    })();
+    
+    await addProduct({ ...form, price: Number(form.price) });
+    
+    setForm({ name: "", price: "", category: "Gadgets", image: "", description: "" });
+    alert("Produk Berhasil Ditambahkan!");
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-xl shadow space-y-4"
-    >
-      <h2 className="text-lg font-bold mb-4">Tambah Produk Baru</h2>
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 space-y-4">
+      <h3 className="font-bold text-gray-800 border-b border-gray-100 pb-3 mb-4 text-lg">Tambah Produk Baru</h3>
+      
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4">
+          <div className="space-y-1">
+            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nama Produk</label>
+            <input 
+              type="text" 
+              placeholder="iPhone 15 Pro" 
+              className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all" 
+              value={form.name} 
+              onChange={e => setForm({...form, name: e.target.value})} 
+              required 
+            />
+          </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Nama Produk
-        </label>
-        <input
-          type="text"
-          required
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="mt-1 w-full border p-2 rounded-lg outline-none focus:ring-2 focus:ring-black"
-          placeholder="Contoh: Wireless Headphone Pro"
-        />
+          <div className="space-y-1">
+            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Harga (Rp)</label>
+            <input 
+              type="number" 
+              placeholder="15000000" 
+              className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all" 
+              value={form.price} 
+              onChange={e => setForm({...form, price: e.target.value})} 
+              required 
+            />
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">URL Foto Produk</label>
+          <input 
+            type="url" 
+            placeholder="https://images.unsplash.com/..." 
+            className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all" 
+            value={form.image} 
+            onChange={e => setForm({...form, image: e.target.value})} 
+            required 
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Deskripsi</label>
+          <textarea 
+            placeholder="Jelaskan keunggulan produk lo..." 
+            className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all h-24 resize-none text-sm" 
+            value={form.description} 
+            onChange={e => setForm({...form, description: e.target.value})}
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Kategori</label>
+          <select 
+            className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all font-medium text-gray-600" 
+            value={form.category} 
+            onChange={e => setForm({...form, category: e.target.value})}>
+            <option value="Gadgets">Gadgets</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Toys">Toys</option>
+          </select>
+        </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Harga (Rp)
-        </label>
-        <input
-          type="number"
-          required
-          value={form.price}
-          onChange={(e) => setForm({ ...form, price: e.target.value })}
-          className="mt-1 w-full border p-2 rounded-lg outline-none focus:ring-2 focus:ring-black"
-          placeholder="Contoh: 1200000"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Kategori
-        </label>
-        <select
-          value={form.category}
-          onChange={(e) => setForm({ ...form, category: e.target.value })}
-          className="mt-1 w-full border p-2 rounded-lg outline-none"
-        >
-          <option value="Headphone">Headphone</option>
-          <option value="Laptop">Laptop</option>
-          <option value="Accessory">Accessory</option>
-        </select>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          URL Gambar
-        </label>
-        <input
-          type="text"
-          placeholder="https://..."
-          value={form.image}
-          onChange={(e) => setForm({ ...form, image: e.target.value })}
-          className="mt-1 w-full border p-2 rounded-lg outline-none focus:ring-2 focus:ring-black"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Deskripsi
-        </label>
-        <textarea
-          value={form.description}
-          onChange={(e) => setForm({ ...form, description: e.target.value })}
-          className="mt-1 w-full border p-2 rounded-lg outline-none focus:ring-2 focus:ring-black"
-          rows="3"
-          placeholder="Deskripsi produk..."
-        />
-      </div>
-
-      <button
-        type="submit"
-        className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition font-semibold"
-      >
-        Simpan Produk
-      </button>
+      <Button type="submit" className="w-full py-4 mt-2 font-black tracking-widest shadow-lg shadow-gray-200">
+        SIMPAN KE DATABASE
+      </Button>
     </form>
   );
 }
