@@ -41,7 +41,7 @@ export default function About() {
 
       <footer className="mt-20 pt-10 border-t border-gray-100 text-center">
         <p className="text-gray-400 italic">
-          "Belanja bijak, pilih BijiStore."
+          "Belanja Bijak, Pilih BijiStore."
         </p>
       </footer>
     </main>
