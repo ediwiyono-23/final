@@ -1,27 +1,78 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth"; 
+import { useAuth } from "../../hooks/useAuth";
+import { useCart } from "../../context/CartContext";
+import MiniCart from "./MiniCart";
 
 export default function Navbar() {
-  const { user, logout } = useAuth(); 
+  const { user, logout } = useAuth();
+  const { totalQty } = useCart();
+  const [openCart, setOpenCart] = useState(false);
 
   return (
-    <nav className="bg-black text-white px-8 py-4 flex justify-between items-center sticky top-0 z-50">
-      <Link to="/home" className="text-xl font-bold text-blue-400">BIJISTORE</Link>
+    <nav className="bg-black text-white px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center sticky top-0 z-50">
+      {/* LOGO */}
+      <Link
+        to="/home"
+        className="font-bold text-blue-400 text-sm sm:text-base lg:text-lg"
+      >
+        BIJISTORE
+      </Link>
 
-      <div className="flex gap-6 items-center">
-        <Link to="/home" className="hover:text-blue-400 text-sm">Home</Link>
-        <Link to="/tentang" className="hover:text-blue-400 text-sm">Tentang</Link>
-        <Link to="/kontak" className="hover:text-blue-400 text-sm">Kontak</Link>
+      {/* MENU */}
+      <div className="flex items-center gap-3 sm:gap-4 lg:gap-6 relative text-xs sm:text-sm lg:text-base">
+        <Link to="/home" className="hover:text-blue-400">
+          Home
+        </Link>
+        <Link to="/tentang" className="hover:text-blue-400">
+          Tentang
+        </Link>
+        <Link to="/kontak" className="hover:text-blue-400">
+          Kontak
+        </Link>
 
-        {user ? (
-          <div className="flex items-center gap-4 border-l pl-6 ml-2">
-            {(user?.user?.role === "admin" || user?.role === "admin") && (
-              <Link to="/admin" className="text-xs bg-blue-600 px-3 py-1 rounded">Admin Panel</Link>
-            )}
-            <button onClick={logout} className="text-xs text-red-400 hover:underline">Logout</button>
+        {/* 🛒 KERANJANG */}
+        <button
+          type="button"
+          onClick={() => setOpenCart((v) => !v)}
+          className="relative flex items-center hover:text-blue-400"
+        >
+          {/* icon */}
+          <span className="text-sm sm:text-base lg:text-lg">🛒</span>
+
+          {/* badge */}
+          {totalQty > 0 && (
+            <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[9px] sm:text-[10px] lg:text-xs px-1.5 rounded-full">
+              {totalQty}
+            </span>
+          )}
+        </button>
+
+        {/* MINI CART */}
+        {openCart && (
+          <div
+            className="absolute right-0 top-full mt-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <MiniCart onClose={() => setOpenCart(false)} />
           </div>
+        )}
+
+        {/* AUTH */}
+        {user ? (
+          <button
+            onClick={logout}
+            className="text-red-400 hover:underline text-[10px] sm:text-xs lg:text-sm ml-1"
+          >
+            Logout
+          </button>
         ) : (
-          <Link to="/login" className="bg-blue-600 px-4 py-1 rounded text-sm font-bold">Login</Link>
+          <Link
+            to="/login"
+            className="bg-blue-600 px-2 sm:px-3 py-1 rounded text-[10px] sm:text-xs lg:text-sm font-bold"
+          >
+            Login
+          </Link>
         )}
       </div>
     </nav>
