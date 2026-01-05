@@ -34,7 +34,6 @@ export default function Cart() {
                 Rp {item.price.toLocaleString("id-ID")}
               </p>
 
-              {/* QTY */}
               <div className="flex items-center gap-3 mt-2">
                 <button
                   onClick={() => decreaseQty(item.id)}

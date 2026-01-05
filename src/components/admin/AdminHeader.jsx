@@ -16,7 +16,7 @@ export default function AdminHeader() {
         <Link to="/admin" className="text-xl font-black text-red-600 tracking-tighter">
           ADMIN PANEL
         </Link>
-        <div className="h-4 w-[1px] bg-gray-300 mx-2 hidden md:block"></div>
+        <div className="h-4 w-px bg-gray-300 mx-2 hidden md:block"></div>
         <span className="text-sm text-gray-500 hidden md:inline">
           Selamat bekerja, <span className="font-bold text-gray-800">{user?.user?.name || "Admin"}</span>
         </span>

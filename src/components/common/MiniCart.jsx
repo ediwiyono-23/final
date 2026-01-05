@@ -55,7 +55,7 @@ export default function MiniCart({ onClose }) {
                   −
                 </button>
 
-                <span className="font-semibold min-w-[16px] text-center">
+                <span className="font-semibold min-w-4 text-center">
                   {item.qty}
                 </span>
 
@@ -86,7 +86,6 @@ export default function MiniCart({ onClose }) {
         <span>Rp {totalPrice.toLocaleString("id-ID")}</span>
       </div>
 
-      {/* ✅ BUTTON CHECKOUT (TANPA <a>) */}
       <button
         type="button"
         onClick={handleCheckout}

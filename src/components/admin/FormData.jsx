@@ -7,8 +7,8 @@ export default function FormData() {
   
   const [form, setForm] = useState({ 
     name: "", 
-    price: "", 
-    category: "Gadgets", 
+    price: "",   
+    category: "", 
     image: "", 
     description: "" 
   });
@@ -42,7 +42,7 @@ export default function FormData() {
               onChange={e => setForm({...form, name: e.target.value})} 
               required 
             />
-          </div>
+          </div> 
 
           <div className="space-y-1">
             <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Harga (Rp)</label>
@@ -72,7 +72,7 @@ export default function FormData() {
         <div className="space-y-1">
           <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Deskripsi</label>
           <textarea 
-            placeholder="Jelaskan keunggulan produk lo..." 
+            placeholder="deskripsi produk..." 
             className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all h-24 resize-none text-sm" 
             value={form.description} 
             onChange={e => setForm({...form, description: e.target.value})}

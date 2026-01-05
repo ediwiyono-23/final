@@ -44,6 +44,12 @@ export default function EditProduct() {
           className="w-full border p-3 rounded-xl"
           onChange={(e) => setForm({ ...form, price: e.target.value })} 
         />
+        <input 
+          type="text" 
+          value={form.description} 
+          className="w-full border p-3 rounded-xl"
+          onChange={(e) => setForm({ ...form, description: e.target.value })} 
+        />
         <div className="flex gap-4">
           <Button type="submit" className="flex-1">Simpan</Button>
           <Button variant="outline" className="flex-1" onClick={() => navigate("/admin")}>Batal</Button>

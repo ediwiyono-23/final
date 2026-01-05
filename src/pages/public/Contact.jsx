@@ -1,5 +1,3 @@
-import Navbar from "../../components/common/Navbar"; 
-import Footer from "../../components/common/Footer"; 
 import Button from "../../components/ui/Button"; 
 
 export default function Contact() {
@@ -9,7 +7,6 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Navbar />
       <main className="flex-1 max-w-4xl mx-auto py-20 px-6">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div>
@@ -22,7 +19,7 @@ export default function Contact() {
                 <span className="text-2xl">📍</span>
                 <div>
                   <p className="text-xs font-bold text-gray-400 uppercase">Alamat</p>
-                  <p className="text-sm font-semibold">Semarang, Jawa Tengah</p>
+                  <p className="text-sm font-semibold">yogyakarta, Jawa Tengah</p>
                 </div>
               </div>
               <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
@@ -47,7 +44,6 @@ export default function Contact() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
