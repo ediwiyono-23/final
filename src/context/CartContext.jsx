@@ -10,12 +10,10 @@ export function CartProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
 
-  //  SIMPAN KE LOCALSTORAGE
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // ➕ TAMBAH KE KERANJANG
   const addToCart = (product) => {
     setCart((prev) => {
       const exist = prev.find((item) => item.id === product.id);
@@ -30,7 +28,6 @@ export function CartProvider({ children }) {
     });
   };
 
-  // ➕ TAMBAH QTY
   const increaseQty = (id) => {
     setCart((prev) =>
       prev.map((item) =>
@@ -41,7 +38,6 @@ export function CartProvider({ children }) {
     );
   };
 
-  // ➖ KURANGI QTY
   const decreaseQty = (id) => {
     setCart((prev) =>
       prev
@@ -54,18 +50,15 @@ export function CartProvider({ children }) {
     );
   };
 
-  // HAPUS ITEM
   const removeFromCart = (id) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // TOTAL QTY (badge)
   const totalQty = cart.reduce(
     (sum, item) => sum + item.qty,
     0
   );
 
-  // TOTAL HARGA
   const totalPrice = cart.reduce(
     (sum, item) => sum + item.price * item.qty,
     0

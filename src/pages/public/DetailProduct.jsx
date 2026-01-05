@@ -36,7 +36,6 @@ export default function DetailProduct() {
     <div className="min-h-screen bg-white text-gray-900">
       <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-12">
 
-        {/* KIRI */}
         <div className="space-y-4">
           <Link
             to="/home"
@@ -54,7 +53,6 @@ export default function DetailProduct() {
           </div>
         </div>
 
-        {/* KANAN */}
         <div className="flex flex-col justify-center lg:pl-10 space-y-8">
           <div className="space-y-2">
             <p className="text-blue-600 font-black text-xs tracking-[0.2em] uppercase">

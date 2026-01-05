@@ -21,7 +21,6 @@ export default function About() {
             </p>
           </div>
 
-          {/* Kartu Misi - Sekarang Putih (Sebelumnya Hitam) */}
           <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <h2 className="text-2xl font-bold mb-4 text-gray-800">Misi Kami</h2>
             <ul className="space-y-4 text-gray-600">
