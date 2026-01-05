@@ -3,15 +3,15 @@ import { Link } from "react-router-dom";
 import { useProducts } from "../../hooks/useProducts"; 
 import Dialog from "../ui/Dialog"; 
 
-export default function DataTable({ products }) {
-  const { deleteProduct } = useProducts();
-  const [selectedId, setSelectedId] = useState(null);
-  const handleDeleteConfirm = async () => {
-    if (selectedId) {
-      await deleteProduct(selectedId); 
-      setSelectedId(null); 
-    }
-  };
+  export default function DataTable({ products }) {
+    const { deleteProduct } = useProducts();
+    const [selectedId, setSelectedId] = useState(null);
+    const handleDeleteConfirm = async () => {
+      if (selectedId) {
+        await deleteProduct(selectedId); 
+        setSelectedId(null); 
+      }
+    };
 
   return (
     <div className="bg-white rounded-xl border overflow-hidden shadow-sm">

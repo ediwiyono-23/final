@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import Badge from "../ui/Badge";
@@ -18,8 +19,7 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className="bg-[#3b3d45] text-white rounded-2xl shadow-lg hover:shadow-2xl transition p-6 flex flex-col">
-      {/* IMAGE */}
+    <div className="bg-[#6f7072] text-white rounded-2xl shadow-lg hover:shadow-2xl transition p-6 flex flex-col">
       <Link to={`/detail-produk/${product.id}`} className="flex justify-center">
         <img
           src={product.image || "https://via.placeholder.com/300"}
@@ -28,7 +28,6 @@ export default function ProductCard({ product }) {
         />
       </Link>
 
-      {/* INFO */}
       <div className="mt-5 flex-1">
         <div className="flex justify-between items-start gap-2">
           <h2 className="font-bold text-lg uppercase leading-snug">
@@ -44,7 +43,6 @@ export default function ProductCard({ product }) {
         </p>
       </div>
 
-      {/* ACTION */}
       <div className="mt-6 space-y-3">
         <Button
           onClick={() => addToCart(product)}

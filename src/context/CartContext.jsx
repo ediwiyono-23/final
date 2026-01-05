@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
@@ -8,7 +10,7 @@ export function CartProvider({ children }) {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // 💾 SIMPAN KE LOCALSTORAGE
+  //  SIMPAN KE LOCALSTORAGE
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -52,18 +54,18 @@ export function CartProvider({ children }) {
     );
   };
 
-  // ❌ HAPUS ITEM
+  // HAPUS ITEM
   const removeFromCart = (id) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // 🔢 TOTAL QTY (badge)
+  // TOTAL QTY (badge)
   const totalQty = cart.reduce(
     (sum, item) => sum + item.qty,
     0
   );
 
-  // 💰 TOTAL HARGA
+  // TOTAL HARGA
   const totalPrice = cart.reduce(
     (sum, item) => sum + item.price * item.qty,
     0

@@ -19,7 +19,7 @@ export default function Dialog({ open, onClose, title, children, onConfirm }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose}></div>
       <div className="bg-white rounded-2xl shadow-2xl z-10 w-full max-w-md p-6 transform transition-all">
         <h3 className="text-xl font-bold text-gray-900">{title}</h3>
