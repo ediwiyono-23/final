@@ -5,18 +5,24 @@ import ProductCard from "../../components/common/ProductCard";
 export default function Home() {
   const { data: products = [], fetchProducts, loading } = useProducts();
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
+  const [category, setCategory] = useState("ALL"); 
   const [sort, setSort] = useState("default");
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
-  const categories = ["all", ...new Set(products.map((p) => p.category))];
+  const categories = ["ALL", ...new Set(
+    products
+      .map(p => p.category?.toUpperCase())
+      .filter(cat => cat && cat !== "ALL") 
+  )].sort(); 
 
   const filteredProducts = products.filter((item) => {
     const matchSearch = item.name.toLowerCase().includes(search.toLowerCase());
-    const matchCategory = category === "all" || item.category === category;
+    const matchCategory = 
+      category === "ALL" || 
+      item.category?.toUpperCase() === category;
     return matchSearch && matchCategory;
   });
 
@@ -28,89 +34,77 @@ export default function Home() {
 
   return (
     <div className="bg-[#020617] min-h-screen font-sans antialiased text-slate-200">
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden text-center px-6">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
         <div className="absolute inset-0 z-0">
-          <div className="absolute  left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-600/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-125 h-125 bg-cyan-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-[120px] animate-bounce" style={{ animationDuration: '8s' }} />
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto space-y-9">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mx-auto">
-            <span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping" />
-            <span className="text-xs font-bold tracking-widest uppercase text-cyan-400">
-               Terlaris 2024
+        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl animate-fade-in">
+            <span className="flex h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-slate-300">
+               Official Store 2024
             </span>
           </div>
 
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white leading-[0.9]">
-            bijistore
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white leading-none">
+            BIJI<span className="text-blue-500">STORE</span>
             <br />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-emerald-400">
-              ayo belanja sekarang!
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-emerald-400 italic">
+              Simple. Fast. Reliable.
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Belanja berbagai produk terbaru dengan sistem checkout WhatsApp yang cepat,
-            aman, dan tanpa ribet. Semua produk original & terpercaya.
+          <p className="text-lg md:text-2xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+            Temukan koleksi eksklusif dengan pengalaman belanja <span className="text-white font-medium">WhatsApp Checkout</span> yang revolusioner.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 pt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10">
             <button
-              onClick={() =>
-                document
-                  .getElementById("katalog")
-                  .scrollIntoView({ behavior: "smooth" })
-              }
-              className="group relative px-14 py-4 bg-white text-black font-bold rounded-full overflow-hidden transition-all hover:pr-20"
+              onClick={() => document.getElementById("katalog").scrollIntoView({ behavior: "smooth" })}
+              className="px-10 py-5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl transition-all hover:scale-105 hover:shadow-[0_20px_50px_rgba(37,99,235,0.3)]"
             >
-              <span className="relative z-10">Mulai Belanja</span>
-              <span className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all">
-                →
-              </span>
+              Mulai Eksplorasi
             </button>
-
-            <div className="flex items-center gap-6 text-xs font-medium text-slate-500 tracking-widest uppercase">
-              <span className="hover:text-white transition">● Original</span>
-              <span className="hover:text-white transition">● Fast</span>
-              <span className="hover:text-white transition">● Secure</span>
+            <div className="flex gap-4">
+               {['Premium', 'Original', 'Secure'].map((tag) => (
+                 <span key={tag} className="text-[10px] tracking-widest uppercase py-2 px-4 rounded-lg border border-white/5 bg-white/5 text-slate-500">
+                   {tag}
+                 </span>
+               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section
-        id="katalog"
-        className="relative py-32 bg-white text-slate-900 rounded-t-[50px] lg:rounded-t-[80px]"
-      >
+      <section id="katalog" className="relative py-24 bg-slate-50 text-slate-900 rounded-t-[40px] md:rounded-t-[100px] -mt-20 z-20">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl lg:text-5xl font-black tracking-tight">
-                Eksplorasi barang kami
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-16 gap-8">
+            <div className="space-y-2">
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900">
+                Katalog Produk
               </h2>
-              <p className="text-slate-500 max-w-md">
-                Pilih produk terbaik sesuai kebutuhan Anda.
-              </p>
+              <p className="text-slate-500 font-medium">Menampilkan {sortedProducts.length} produk terbaik untukmu.</p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-4 p-2 bg-white rounded-4xl shadow-xl shadow-slate-200/50 border border-slate-100">
               <input
                 type="text"
-                placeholder="Cari produk..."
+                placeholder="Cari sesuatu..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="px-5 py-3 bg-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500 w-64"
+                className="px-6 py-3 bg-transparent outline-none w-full md:w-64 border-r border-slate-100"
               />
 
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="px-4 py-3 bg-slate-100 rounded-2xl font-medium text-slate-600"
+                className="px-4 py-3 bg-transparent font-semibold text-slate-600 outline-none cursor-pointer min-w-30"
               >
-                {categories.map((cat, i) => (
-                  <option key={i} value={cat}>
-                    {cat === "all" ? "Semua" : cat}
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
                   </option>
                 ))}
               </select>
@@ -118,7 +112,7 @@ export default function Home() {
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="px-4 py-3 bg-slate-100 rounded-2xl font-medium text-slate-600"
+                className="px-4 py-3 bg-slate-900 text-white rounded-3xl font-medium outline-none cursor-pointer hover:bg-slate-800 transition"
               >
                 <option value="default">Urutkan</option>
                 <option value="price-asc">Termurah</option>
@@ -128,36 +122,24 @@ export default function Home() {
           </div>
 
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-40 gap-4">
-              <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-              <p className="text-slate-400 font-medium">
-                Menyiapkan katalog terbaik...
-              </p>
-            </div>
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+               {[1,2,3,4].map(i => <div key={i} className="h-80 bg-slate-200 animate-pulse rounded-3xl" />)}
+             </div>
           ) : sortedProducts.length === 0 ? (
-            <div className="text-center py-40 border-2 border-dashed border-slate-200 rounded-[40px]">
-              <p className="text-2xl font-bold text-slate-300">
-                Produk tidak ditemukan
-              </p>
-              <button
-                onClick={() => {
-                  setSearch("");
-                  setCategory("all");
-                }}
-                className="mt-4 text-blue-600 font-bold underline"
+            <div className="text-center py-32 bg-white rounded-[3rem] border-2 border-dashed border-slate-200">
+              <div className="text-6xl mb-4">🔍</div>
+              <h3 className="text-xl font-bold text-slate-400">Wah, barangnya nggak ada nih...</h3>
+              <button 
+                onClick={() => { setSearch(""); setCategory("ALL"); setSort("default"); }} 
+                className="mt-4 text-blue-600 font-bold hover:text-blue-700"
               >
-                Lihat semua produk
+                Reset Pencarian
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
               {sortedProducts.map((item) => (
-                <div
-                  key={item.id}
-                  className="transition-transform duration-500 hover:-translate-y-2"
-                >
-                  <ProductCard product={item} />
-                </div>
+                <ProductCard key={item.id} product={item} />
               ))}
             </div>
           )}

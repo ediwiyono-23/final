@@ -3,17 +3,24 @@ import { useParams, Link } from "react-router-dom";
 import { API_URL } from "../../services/api";
 import { useCart } from "../../context/CartContext";
 import Button from "../../components/ui/Button";
+import NotificationModal from "../../components/ui/NotificationModal"; 
 
 export default function DetailProduct() {
   const { id } = useParams();
   const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   useEffect(() => {
     fetch(`${API_URL}/${id}`)
       .then((res) => res.json())
       .then((data) => setProduct(data));
   }, [id]);
+
+  const handleConfirmAdd = () => {
+    addToCart(product);
+    setIsModalOpen(false);
+  };
 
   const handleBuyWA = () => {
     const message = `Halo admin, saya mau beli produk berikut:%0A%0A📦 *${product.name}*%0A💰 Harga: Rp ${Number(
@@ -34,21 +41,27 @@ export default function DetailProduct() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-12">
+      <NotificationModal 
+        isOpen={isModalOpen}
+        message={`Tambahkan ${product.name} ke keranjang belanja?`}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirmAdd}
+      />
 
+      <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-12">
         <div className="space-y-4">
           <Link
             to="/home"
-            className="inline-block text-xs font-bold tracking-widest text-gray-400 hover:text-black mb-4"
+            className="inline-block text-xs font-bold tracking-widest text-gray-400 hover:text-black mb-4 transition-colors"
           >
             ← KEMBALI KE TOKO
           </Link>
 
-          <div className="bg-gray-50 rounded-[40px] p-8 md:p-16 border border-gray-100 group">
+          <div className="bg-gray-50 rounded-[40px] p-8 md:p-16 border border-gray-100 group overflow-hidden">
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-auto max-h-[500px] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-auto max-h-125 object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700"
             />
           </div>
         </div>
@@ -67,7 +80,7 @@ export default function DetailProduct() {
             <span className="text-4xl font-black text-gray-900">
               Rp {Number(product.price).toLocaleString("id-ID")}
             </span>
-            <div className="h-8 w-[2px] bg-gray-200" />
+            <div className="h-8 w-0.5 bg-gray-200" />
             <span className="text-green-600 font-bold text-sm">
               Tersedia
             </span>
@@ -80,7 +93,7 @@ export default function DetailProduct() {
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button
-              onClick={() => addToCart(product)}
+              onClick={() => setIsModalOpen(true)}
               className="flex-1 py-6 bg-black text-white text-xs font-black tracking-widest rounded-2xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] transition-all active:scale-95">
               TAMBAH KERANJANG
             </Button>
@@ -100,12 +113,8 @@ export default function DetailProduct() {
                 </svg>
               </div>
               <div>
-                <h4 className="text-[11px] font-black uppercase tracking-[0.2em]">
-                  Authentic
-                </h4>
-                <p className="text-[10px] font-bold text-gray-400 uppercase">
-                  Jaminan Produk<br />Original 100%
-                </p>
+                <h4 className="text-[11px] font-black uppercase tracking-[0.2em]">Authentic</h4>
+                <p className="text-[10px] font-bold text-gray-400 uppercase">Jaminan Produk<br />Original 100%</p>
               </div>
             </div>
 
@@ -116,15 +125,10 @@ export default function DetailProduct() {
                 </svg>
               </div>
               <div>
-                <h4 className="text-[11px] font-black uppercase tracking-[0.2em]">
-                  Priority
-                </h4>
-                <p className="text-[10px] font-bold text-gray-400 uppercase">
-                  Pengiriman<br />Cepat & Aman
-                </p>
+                <h4 className="text-[11px] font-black uppercase tracking-[0.2em]">Priority</h4>
+                <p className="text-[10px] font-bold text-gray-400 uppercase">Pengiriman<br />Cepat & Aman</p>
               </div>
             </div>
-
           </div>
         </div>
       </main>

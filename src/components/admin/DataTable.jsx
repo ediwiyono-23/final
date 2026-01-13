@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useProducts } from "../../hooks/useProducts"; 
 import Dialog from "../ui/Dialog"; 
 
+
   export default function DataTable({ products }) {
     const { deleteProduct } = useProducts();
     const [selectedId, setSelectedId] = useState(null);
