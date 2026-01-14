@@ -3,18 +3,20 @@ import { useParams, Link } from "react-router-dom";
 import { API_URL } from "../../services/api";
 import { useCart } from "../../context/CartContext";
 import Button from "../../components/ui/Button";
-import NotificationModal from "../../components/ui/NotificationModal"; 
+import NotificationModal from "../../components/ui/NotificationModal";
 
 export default function DetailProduct() {
   const { id } = useParams();
   const { addToCart } = useCart();
+
   const [product, setProduct] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTrust, setActiveTrust] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/${id}`)
-      .then((res) => res.json())
-      .then((data) => setProduct(data));
+      .then(res => res.json())
+      .then(data => setProduct(data));
   }, [id]);
 
   const handleConfirmAdd = () => {
@@ -31,8 +33,8 @@ export default function DetailProduct() {
 
   if (!product) {
     return (
-      <div className="h-screen flex items-center justify-center bg-white">
-        <p className="text-sm font-black tracking-[0.3em] text-gray-900 animate-pulse">
+      <div className="h-screen flex items-center justify-center bg-[#020617]">
+        <p className="text-xs font-black tracking-[0.4em] text-slate-400 animate-pulse">
           MEMUAT PRODUK...
         </p>
       </div>
@@ -40,98 +42,165 @@ export default function DetailProduct() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      <NotificationModal 
+    <main className="min-h-screen bg-[#020617] text-slate-200">
+      <NotificationModal
         isOpen={isModalOpen}
         message={`Tambahkan ${product.name} ke keranjang belanja?`}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmAdd}
       />
 
-      <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-12">
-        <div className="space-y-4">
+      <div className="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-20">
+
+        {/* IMAGE */}
+        <div className="space-y-6">
           <Link
             to="/home"
-            className="inline-block text-xs font-bold tracking-widest text-gray-400 hover:text-black mb-4 transition-colors"
+            className="inline-block text-xs font-bold tracking-widest text-slate-400 hover:text-white transition"
           >
             ← KEMBALI KE TOKO
           </Link>
 
-          <div className="bg-gray-50 rounded-[40px] p-8 md:p-16 border border-gray-100 group overflow-hidden">
+          <div className="relative rounded-[3rem] p-10 md:p-16 bg-gradient-to-br from-[#0b1220] to-[#020617] border border-white/10 overflow-hidden group">
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition">
+              <div className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-[120px]" />
+            </div>
+
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-auto max-h-125 object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700"
+              className="relative z-10 w-full h-auto object-contain transition-transform duration-700 group-hover:scale-110"
             />
           </div>
         </div>
 
-        <div className="flex flex-col justify-center lg:pl-10 space-y-8">
-          <div className="space-y-2">
-            <p className="text-blue-600 font-black text-xs tracking-[0.2em] uppercase">
+        {/* CONTENT */}
+        <div className="flex flex-col justify-center space-y-10">
+          <div>
+            <p className="text-indigo-400 text-xs font-black tracking-[0.3em] uppercase mb-2">
               {product.category}
             </p>
-            <h1 className="text-5xl font-black tracking-tighter leading-[0.95] text-gray-900">
+            <h1 className="text-5xl xl:text-6xl font-black tracking-tight text-white">
               {product.name}
             </h1>
           </div>
 
           <div className="flex items-center gap-6">
-            <span className="text-4xl font-black text-gray-900">
+            <span className="text-4xl font-black text-white">
               Rp {Number(product.price).toLocaleString("id-ID")}
             </span>
-            <div className="h-8 w-0.5 bg-gray-200" />
-            <span className="text-green-600 font-bold text-sm">
+            <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-bold">
               Tersedia
             </span>
           </div>
 
-          <p className="text-gray-500 text-lg leading-relaxed border-l-4 border-blue-600 pl-6 py-2 bg-blue-50/30 rounded-r-xl">
-            {product.description ||
-              "Produk pilihan terbaik dari BijiStore. Kami menjamin kualitas dan keaslian setiap item yang kami kirimkan ke tangan Anda."}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              className="flex-1 py-6 bg-black text-white text-xs font-black tracking-widest rounded-2xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] transition-all active:scale-95">
-              TAMBAH KERANJANG
-            </Button>
-
-            <Button
-              onClick={handleBuyWA}
-              className="flex-1 py-6 bg-green-500 text-white text-xs font-black tracking-widest rounded-2xl hover:bg-green-600 hover:shadow-[0_20px_40px_-15px_rgba(34,197,94,0.3)] transition-all active:scale-95">
-              BELI VIA WHATSAPP
-            </Button>
+          <div className="relative pl-6">
+            <span className="absolute left-0 top-0 h-full w-1 rounded-full bg-gradient-to-b from-indigo-500 to-cyan-400" />
+            <p className="text-slate-400 text-lg leading-relaxed">
+              {product.description ||
+                "Produk pilihan terbaik dari BijiStore. Kami menjamin kualitas dan keaslian setiap item yang kami kirimkan ke tangan Anda."}
+            </p>
           </div>
 
-          <div className="pt-10 grid grid-cols-2 gap-8 border-t border-gray-100">
-            <div className="flex items-start gap-4 group">
-              <div className="w-12 h-12 rounded-2xl border-2 border-black flex items-center justify-center transition-all group-hover:bg-black group-hover:text-white">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4M12 5l7 7-7 7-7-7 7-7z" />
-                </svg>
-              </div>
-              <div>
-                <h4 className="text-[11px] font-black uppercase tracking-[0.2em]">Authentic</h4>
-                <p className="text-[10px] font-bold text-gray-400 uppercase">Jaminan Produk<br />Original 100%</p>
-              </div>
+          {/* ACTION — GLOW BALIK */}
+          <div className="relative pt-6">
+
+            {/* AMBIENT GLOW */}
+            <div className="pointer-events-none absolute inset-x-0 -top-6 flex justify-center gap-20">
+              <div className="w-64 h-24 bg-white/10 blur-[80px]" />
+              <div className="w-64 h-24 bg-emerald-500/30 blur-[80px]" />
             </div>
 
-            <div className="flex items-start gap-4 group">
-              <div className="w-12 h-12 rounded-2xl bg-zinc-100 flex items-center justify-center transition-all group-hover:bg-blue-600 group-hover:text-white">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+            <div className="relative flex flex-col sm:flex-row gap-5">
+              <Button
+                onClick={() => setIsModalOpen(true)}
+                className="
+                  flex-1 py-6
+                  bg-white/10 text-white
+                  text-xs font-black tracking-widest
+                  rounded-2xl
+                  hover:bg-white/20
+                  hover:shadow-[0_20px_60px_rgba(255,255,255,0.15)]
+                  transition-all
+                  active:scale-95
+                "
+              >
+                TAMBAH KERANJANG
+              </Button>
+
+              <Button
+                onClick={handleBuyWA}
+                className="
+                  flex-1 py-6
+                  bg-gradient-to-r from-emerald-500 to-green-400
+                  text-black
+                  text-xs font-black tracking-widest
+                  rounded-2xl
+                  hover:brightness-110
+                  hover:shadow-[0_20px_60px_rgba(34,197,94,0.6)]
+                  transition-all
+                  active:scale-95
+                "
+              >
+                BELI VIA WHATSAPP
+              </Button>
+            </div>
+          </div>
+
+          {/* TRUST */}
+          <div className="pt-12 grid grid-cols-2 gap-12 border-t border-white/10">
+            <button
+              onClick={() =>
+                setActiveTrust(activeTrust === "authentic" ? null : "authentic")
+              }
+              className="group flex items-center gap-5 text-left transition-all"
+            >
+              <div
+                className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all ${
+                  activeTrust === "authentic"
+                    ? "bg-indigo-500 text-white border-indigo-400 shadow-[0_0_30px_rgba(99,102,241,0.6)]"
+                    : "bg-indigo-500/10 text-indigo-400 border-indigo-400/30 animate-soft-glow"
+                }`}
+              >
+                ✔
               </div>
               <div>
-                <h4 className="text-[11px] font-black uppercase tracking-[0.2em]">Priority</h4>
-                <p className="text-[10px] font-bold text-gray-400 uppercase">Pengiriman<br />Cepat & Aman</p>
+                <h4 className="text-sm font-black tracking-widest uppercase text-white">
+                  Authentic
+                </h4>
+                <p className="text-xs text-slate-400 uppercase">
+                  Produk Original 100%
+                </p>
               </div>
-            </div>
+            </button>
+
+            <button
+              onClick={() =>
+                setActiveTrust(activeTrust === "priority" ? null : "priority")
+              }
+              className="group flex items-center gap-5 text-left transition-all"
+            >
+              <div
+                className={`w-14 h-14 rounded-2xl flex items-center justify-center border transition-all ${
+                  activeTrust === "priority"
+                    ? "bg-amber-400 text-black border-amber-300 shadow-[0_0_30px_rgba(251,191,36,0.7)]"
+                    : "bg-amber-400/10 text-amber-300 border-amber-400/30"
+                }`}
+              >
+                ⚡
+              </div>
+              <div>
+                <h4 className="text-sm font-black tracking-widest uppercase text-white">
+                  Priority
+                </h4>
+                <p className="text-xs text-slate-400 uppercase">
+                  Pengiriman Cepat & Aman
+                </p>
+              </div>
+            </button>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
