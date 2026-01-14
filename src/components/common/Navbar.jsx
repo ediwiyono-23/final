@@ -10,7 +10,6 @@ export default function Navbar() {
   const [openCart, setOpenCart] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-
   const handleLogout = () => {
     logout();
     setIsMenuOpen(false);
