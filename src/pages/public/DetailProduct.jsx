@@ -41,7 +41,6 @@ export default function DetailProduct() {
 
   const isOut = product.stock === 0;
   const isLow = product.stock > 0 && product.stock <= 5;
- 
   const handleConfirmAdd = async () => {
     if (isOut || isUpdating) {
       alert("❌ Stok produk sudah habis");
