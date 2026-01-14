@@ -17,14 +17,12 @@ export default function NotificationModal({ isOpen, message, onClose, onConfirm 
         <div className="flex flex-col gap-3">
           <button
             onClick={onConfirm}
-            className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-blue-600 transition-all shadow-xl"
-          >
+            className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-blue-600 transition-all shadow-xl">
             Ya
           </button>
           <button
             onClick={onClose}
-            className="w-full py-4 bg-slate-100 text-slate-400 rounded-2xl font-bold hover:bg-slate-200 transition-all"
-          >
+            className="w-full py-4 bg-slate-100 text-slate-400 rounded-2xl font-bold hover:bg-slate-200 transition-all">
             Batal
           </button>
         </div>
