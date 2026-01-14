@@ -8,7 +8,7 @@ export default function FormData() {
   const [form, setForm] = useState({ 
     name: "", 
     price: "",   
-    category: "", 
+    category: "GADGETS", 
     image: "", 
     description: "" 
   });
@@ -20,9 +20,13 @@ export default function FormData() {
       return alert("Nama, Harga, dan Link Foto wajib diisi!");
     }
     
-    await addProduct({ ...form, price: Number(form.price) });
+    await addProduct({ 
+      ...form, 
+      price: Number(form.price),
+      category: form.category 
+    });
     
-    setForm({ name: "", price: "", category: "Gadgets", image: "", description: "" });
+    setForm({ name: "", price: "", category: "GADGETS", image: "", description: "" });
     alert("Produk Berhasil Ditambahkan!");
   };
 
@@ -85,9 +89,9 @@ export default function FormData() {
             className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all font-medium text-gray-600" 
             value={form.category} 
             onChange={e => setForm({...form, category: e.target.value})}>
-            <option value="Gadgets">Gadgets</option>
-            <option value="Fashion">Fashion</option>
-            <option value="Toys">Toys</option>
+            <option value="GADGETS">GADGETS</option>
+            <option value="FASHION">FASHION</option>
+            <option value="TOYS">TOYS</option>
           </select>
         </div>
       </div>
