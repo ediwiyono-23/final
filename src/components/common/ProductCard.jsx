@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom"; 
+import { useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import Badge from "../ui/Badge";
 import NotificationModal from "../ui/NotificationModal";
@@ -8,91 +8,101 @@ export default function ProductCard({ product }) {
   const { addToCart } = useCart();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleConfirmAdd = useCallback(() => {
+    addToCart(product);
+    setIsModalOpen(false);
+  }, [product, addToCart]);
+
   if (!product) return null;
 
   const categoryDisplay = product.category?.trim() || "Lainnya";
+  const formattedPrice = Number(product.price).toLocaleString("id-ID");
 
-  const handleAskToCart = () => {
-    setIsModalOpen(true); 
-  };
-
-  const handleConfirmAdd = () => {
-    addToCart(product);
-    setIsModalOpen(false);
-  };
-
-  const handleWhatsAppBuy = () => {
-    const message = `Halo Bijistore, saya ingin memesan: *${product.name}*`;
-    window.open(`https://wa.me/6281362011079?text=${encodeURIComponent(message)}`);
+  const handleWhatsAppBuy = (e) => {
+    e.preventDefault();
+    const message = `Halo Bijistore 👋, saya ingin memesan *${product.name}*`;
+    window.open(
+      `https://wa.me/6281362011079?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
   };
 
   return (
     <>
-      <NotificationModal 
+      <NotificationModal
         isOpen={isModalOpen}
-        message="Apakah anda yakin ingin memasukkan produk ini ke keranjang?"
+        message={`Tambahkan ${product.name} ke keranjang belanja Anda?`}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleConfirmAdd}
       />
 
-      <div className="group relative flex flex-col bg-white rounded-3xl p-5 transition-all duration-500 hover:shadow-xl hover:-translate-y-1 border border-slate-100 h-full overflow-hidden">
-        <div className="relative overflow-hidden rounded-2xl bg-slate-50 h-60 flex items-center justify-center mb-5 transition-all duration-500">
-          <div className="absolute top-3 left-3 z-10">
-            <Badge className="bg-white/90 backdrop-blur-sm text-slate-900 font-bold text-xs px-2.5 py-1 rounded-full shadow-sm">
+      <article className="group relative flex flex-col h-full rounded-3xl p-5 bg-linear-to-b from-[#0b1220] to-[#020617] border border-white/10 transition-all duration-500 hover:-translate-y-2 hover:border-amber-500/50 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
+
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl"
+          style={{
+            background: "radial-gradient(circle at top, rgba(245,158,11,0.1), transparent 70%)",
+          }} 
+        />
+        <div className="relative mb-4 h-60 rounded-2xl bg-white/3 flex items-center justify-center overflow-hidden border border-white/5">
+          <div className="absolute top-3 left-3 z-30">
+            <Badge className="bg-black/80 backdrop-blur-md text-amber-400 text-[9px] font-black tracking-[0.2em] px-3 py-1.5 rounded-lg border border-white/10 shadow-xl uppercase italic">
               {categoryDisplay}
             </Badge>
           </div>
 
-          <Link 
-            to={`/detail-produk/${product.id}`} 
-            className="w-full h-full flex items-center justify-center p-4"
-            aria-label={`Lihat detail ${product.name}`}
+          <Link
+            to={`/detail-produk/${product.id}`}
+            className="relative z-10 w-full h-full flex items-center justify-center p-6"
           >
             <img
-              src={product.image || "https://via.placeholder.com/300"} 
+              src={product.image || "https://via.placeholder.com/300"}
               alt={product.name}
-              className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
               loading="lazy"
+              className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-110"
             />
           </Link>
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent z-20 pointer-events-none" />
         </div>
 
-        <div className="flex-1 flex flex-col px-1">
-          <Link to={`/detail-produk/${product.id}`} className="block mb-3">
-            <h3 className="font-bold text-lg text-slate-800 leading-tight line-clamp-2 hover:text-blue-600 transition-colors duration-200">
+        <div className="flex flex-col flex-1 relative z-10">
+          <Link to={`/detail-produk/${product.id}`} className="mb-3">
+            <h3 className="text-sm md:text-base font-bold text-white leading-snug line-clamp-2 group-hover:text-amber-400 transition-colors">
               {product.name}
             </h3>
           </Link>
 
           <div className="mt-auto flex items-end justify-between">
             <div className="flex flex-col">
-              <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Harga</span>
-              <p className="text-xl font-bold text-slate-900 mt-1">
-                <span className="text-sm font-normal text-slate-500 mr-0.5">Rp</span>
-                {Number(product.price).toLocaleString("id-ID")}
+              <span className="text-[8px] uppercase tracking-[0.3em] text-slate-500 font-black mb-1">
+                Price
+              </span>
+              <p className="text-lg font-black text-white tracking-tight">
+                <span className="text-xs font-medium text-amber-500 mr-1">Rp</span>
+                {formattedPrice}
               </p>
             </div>
-
+            
             <button
-              onClick={handleAskToCart}
-              aria-label={`Tambah ${product.name} ke keranjang`}
-              className="w-12 h-12 rounded-xl bg-slate-900 text-white hover:bg-blue-600 transition-all duration-300 flex items-center justify-center shadow-md hover:shadow-lg active:scale-95"
+              onClick={() => setIsModalOpen(true)}
+              className="w-11 h-11 rounded-2xl bg-white/5 text-amber-400 border border-white/10 flex items-center justify-center transition-all duration-300 hover:bg-amber-500 hover:text-black hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] active:scale-90"
+              aria-label="Tambah ke keranjang"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
               </svg>
             </button>
           </div>
 
           <button
             onClick={handleWhatsAppBuy}
-            aria-label={`Beli ${product.name} via WhatsApp`}
-            className="w-full mt-5 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-[0.98]"
+            className="mt-5 w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] bg-linear-to-r from-amber-600 to-orange-500 text-black transition-all duration-300 hover:brightness-110 hover:shadow-[0_10px_20px_rgba(234,88,12,0.3)] active:scale-[0.97]"
           >
-            Beli 
+            Beli via WhatsApp
           </button>
         </div>
-      </div>
+      </article>
     </>
   );
 }

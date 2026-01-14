@@ -1,3 +1,4 @@
+
 import { useCart } from "../../context/CartContext";
 
 export default function Cart() {
@@ -34,17 +35,28 @@ export default function Cart() {
                 Rp {item.price.toLocaleString("id-ID")}
               </p>
 
-              <div className="flex items-center gap-3 mt-2">
+              <p className="text-xs text-slate-500 mt-1">
+                Sisa stok: {item.stock}
+              </p>
+
+              <div className="flex items-center gap-3 mt-3">
                 <button
                   onClick={() => decreaseQty(item.id)}
                   className="px-3 py-1 border rounded"
                 >
                   −
                 </button>
+
                 <span className="font-bold">{item.qty}</span>
+
                 <button
                   onClick={() => increaseQty(item.id)}
-                  className="px-3 py-1 border rounded"
+                  disabled={item.stock === 0}
+                  className={`px-3 py-1 border rounded ${
+                    item.stock === 0
+                      ? "opacity-40 cursor-not-allowed"
+                      : ""
+                  }`}
                 >
                   +
                 </button>
@@ -68,7 +80,9 @@ export default function Cart() {
 
         <a
           href={`https://wa.me/6281362011079?text=${encodeURIComponent(
-            `Halo, saya mau checkout dengan total Rp ${totalPrice}`
+            `Halo, saya mau checkout dengan total Rp ${totalPrice.toLocaleString(
+              "id-ID"
+            )}`
           )}`}
           className="bg-green-600 text-white px-6 py-3 rounded-xl"
         >
