@@ -83,14 +83,12 @@ export default function DataTable({ products }) {
                     <div className="flex justify-center gap-6">
                       <Link
                         to={`/admin/edit/${item.id}`}
-                        className="text-blue-500 font-black hover:text-blue-400 transition-all text-[10px] tracking-widest uppercase hover:scale-110"
-                      >
+                        className="text-blue-500 font-black hover:text-blue-400 transition-all text-[10px] tracking-widest uppercase hover:scale-110">
                         EDIT
                       </Link>
                       <button
                         onClick={() => setSelectedId(item.id)}
-                        className="text-red-600 font-black hover:text-red-500 transition-all text-[10px] tracking-widest uppercase hover:scale-110"
-                      >
+                        className="text-red-600 font-black hover:text-red-500 transition-all text-[10px] tracking-widest uppercase hover:scale-110">
                         HAPUS
                       </button>
                     </div>
