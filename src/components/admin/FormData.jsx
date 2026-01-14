@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useProducts } from "../../hooks/useProducts";
 import Button from "../ui/Button";
@@ -44,26 +43,27 @@ export default function FormData() {
 
     alert("Produk Berhasil Ditambahkan!");
   };
+  const inputClass = "w-full border-2 border-slate-800 bg-slate-950 p-3 rounded-xl outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 text-slate-200 transition-all placeholder:text-slate-700";
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white p-6 rounded-2xl shadow-md border border-gray-100 space-y-4"
+      className="bg-slate-900 p-6 rounded-2xl shadow-2xl border border-slate-800 space-y-4"
     >
-      <h3 className="font-bold text-gray-800 border-b border-gray-100 pb-3 mb-4 text-lg">
-        Tambah Produk Baru
+      <h3 className="font-black text-white border-b border-slate-800 pb-3 mb-6 text-lg tracking-tight italic">
+        TAMBAH PRODUK BARU
       </h3>
       
       <div className="space-y-4">
 
         <div className="space-y-1">
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+          <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">
             Nama Produk
           </label>
           <input 
             type="text" 
             placeholder="iPhone 15 Pro" 
-            className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all" 
+            className={inputClass} 
             value={form.name} 
             onChange={e => setForm({ ...form, name: e.target.value })} 
             required 
@@ -73,13 +73,13 @@ export default function FormData() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
               Harga (Rp)
             </label>
             <input 
               type="number" 
               placeholder="15000000" 
-              className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all" 
+              className={inputClass} 
               value={form.price} 
               onChange={e => setForm({ ...form, price: e.target.value })} 
               required 
@@ -87,14 +87,14 @@ export default function FormData() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
               Stock
             </label>
             <input 
               type="number" 
               min="0"
               placeholder="10" 
-              className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all" 
+              className={inputClass} 
               value={form.stock} 
               onChange={e => setForm({ ...form, stock: e.target.value })} 
               required 
@@ -104,13 +104,13 @@ export default function FormData() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+          <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
             URL Foto Produk
           </label>
           <input 
             type="url" 
             placeholder="https://images.unsplash.com/..." 
-            className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all" 
+            className={inputClass} 
             value={form.image} 
             onChange={e => setForm({ ...form, image: e.target.value })} 
             required 
@@ -118,29 +118,29 @@ export default function FormData() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+          <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
             Deskripsi
           </label>
           <textarea 
             placeholder="deskripsi produk..." 
-            className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all h-24 resize-none text-sm" 
+            className={`${inputClass} h-24 resize-none text-sm`}
             value={form.description} 
             onChange={e => setForm({ ...form, description: e.target.value })}
           />
         </div>
 
         <div className="space-y-1">
-          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+          <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">
             Kategori
           </label>
           <select 
-            className="w-full border-2 border-gray-50 bg-gray-50 p-3 rounded-xl outline-none focus:bg-white focus:border-black transition-all font-medium text-gray-600" 
+            className={`${inputClass} font-bold text-slate-400`}
             value={form.category} 
             onChange={e => setForm({ ...form, category: e.target.value })}
           >
-            <option value="GADGETS">GADGETS</option>
-            <option value="FASHION">FASHION</option>
-            <option value="TOYS">TOYS</option>
+            <option value="GADGETS" className="bg-slate-900">GADGETS</option>
+            <option value="FASHION" className="bg-slate-900">FASHION</option>
+            <option value="TOYS" className="bg-slate-900">TOYS</option>
           </select>
         </div>
 
@@ -148,7 +148,7 @@ export default function FormData() {
 
       <Button
         type="submit"
-        className="w-full py-4 mt-2 font-black tracking-widest shadow-lg shadow-gray-200"
+        className="w-full py-4 mt-2 font-black tracking-[0.2em] shadow-lg bg-red-600 hover:bg-red-700 text-white border-none transition-all active:scale-95"
       >
         SIMPAN KE DATABASE
       </Button>
